@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="mazedin_example" width="405" height="205"></canvas>
+
+<form name="mazedin_form" id="mazedin_form" action="" onsubmit="return false">
+
+	<legend>Mazed In Example:</legend>
+
+	<button type="button" onclick="runMazedInExample()">Run</button><input type="reset" value="Reset values">
+	<br>
+	Background Colour: <input class="jscolor" name="mazedin_background_color" value="ffffff">
+	<br>
+	Text: <input type="text" name="mazedin_text" value="TITLE" size="10" maxlength="10"> <br>
+	Font: 
+	<select name="mazedin_font">
+		<option value="Arial">Arial</option>
+		<option value="Verdana">Verdana</option>
+		<option value="Palantino">Palantino</option>
+		<option value="audi">Audi</option>
+	</select>
+	Font size: <input type="number" name="mazedin_font_size" value="72" min="10" max="100"> <br>
+
+	Letter Fill Color: <input class="jscolor" name="mazedin_letter_fill" value="ab2567">
+	<br>
+
+	<button type="button" onclick="addMaze()">Add maze</button>
+	<fieldset name="mazedin_maze_fieldset">
+		<legend>Maze 1:</legend>
+		Starting position: <br>
+		x: <input type="number" name="mazein_font_size" min="0" max="5">
+		y: <input type="number" name="mazein_font_size" min="0" max="5"> <br>
+		Color: <input class="jscolor" value="ab2567"> <br>
+		Maze speed (milliseconds) <input type="number" name="mazein_font_size" min="1" max="99999" value="10">
+		Delay (milliseconds): <input type="number" name="mazein_font_size" min="0" max="99999" value="0">
+		Mode:
+		<button type="button" id="mazedin_button_1" onclick="removeMaze(this.id)">Remove maze</button>
+	</fieldset>
+</form> 
+
+	<script>
+	const mazedin_form = document.forms["mazedin_form"];
+	//const mazedin_form = document.getElementById('mazedin_form');
+	const mazedin_maze_default = mazedin_form["mazedin_maze_fieldset"];
+	let mazedin_mazes = [mazedin_maze_default];
+
+	/*if (document.activeElement) {
+		console.log(document.activeElement);
+	}*/
+
+	function addMaze() {
+		mazedin_mazes.push(mazedin_maze_default.cloneNode(true));
+		let l = mazedin_mazes.length;
+		setMazeAttributes(l-1);
+
+		// Instantiate new color picker (otherwise it won't work)
+		let input = mazedin_mazes[l-1].getElementsByTagName("input")[2];
+		let picker = new jscolor(input);
+	    mazedin_form.appendChild(mazedin_mazes[l-1]);
+	}
+
+	function removeMaze(button) {
+		let l = Number(button.substr(button.length - 1));
+		l--;
+		mazedin_mazes[l].remove();
+		mazedin_mazes.splice(l, 1);
+		setMazeAttributes(l);
+	}
+	function setMazeAttributes(a) {
+
+		let l = mazedin_mazes.length;
+		for (var i = a; i < l; i++) {
+			mazedin_mazes[i].getElementsByTagName("legend")[0].innerHTML = "Maze " + (i+1);
+			mazedin_mazes[i].getElementsByTagName("button")[0].id = "mazedin_button_" + (i+1);
+		}
+	}
+
+	</script>
+	<script src="jscolor.js"></script>
+	<script src="maze.js"></script>
+
+</body>
+</html>
+
+
